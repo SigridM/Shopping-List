@@ -66,9 +66,20 @@ function clearItems() {
 }
 
 function filterItems() {
-  const filterValue = itemFilter.value.toLowerCase();
-  const itemArray = Array.from(itemList.children);
+  // console.log('Hello world'.includes('world'), typeof 'Hello world');
 
+  const filterValue = itemFilter.value.toLowerCase();
+  // console.log('itemList: ', itemList.children);
+  const itemArray = Array.from(itemList.children);
+  // console.log('filterValue: ', filterValue, typeof filterValue);
+  // console.log('itemArray: ', itemArray);
+  // const matchingItems = itemArray.filter(
+  //   (eachItem) =>
+  //     // console.log(eachItem.innerText, typeof eachItem.innerText);
+  //     eachItem.innerText.includes(filterValue)
+  //   // false;
+  // );
+  // console.log('matchingItems: ', matchingItems);
   for (eachItem of itemArray) {
     if (eachItem.innerText.toLowerCase().includes(filterValue)) {
       eachItem.style.display = defaultItemDisplayStyle;
@@ -79,7 +90,7 @@ function filterItems() {
 }
 
 function filterItemsTraversy(e) {
-  const items = itemList.querySelectorAll('li'); // not an HTMLCollection; does not need to be converted to an Array
+  const items = itemList.querySelectorAll('li');
   const text = e.target.value.toLowerCase();
 
   items.forEach((item) => {
@@ -110,3 +121,4 @@ clearBtn.addEventListener('click', clearItems);
 itemFilter.addEventListener('input', filterItems);
 
 checkUI();
+localStorage.setItem('name', 'Brad');

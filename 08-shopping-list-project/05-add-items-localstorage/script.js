@@ -122,3 +122,6 @@ itemFilter.addEventListener('input', filterItems);
 
 checkUI();
 localStorage.setItem('name', 'Brad');
+localStorage.getItem('name');
+localStorage.removeItem('name');
+localStorage.clear();

@@ -68,7 +68,7 @@ function clearItems() {
 function filterItems() {
   // console.log('Hello world'.includes('world'), typeof 'Hello world');
 
-  const filterValue = itemFilter.value;
+  const filterValue = itemFilter.value.toLowerCase();
   // console.log('itemList: ', itemList.children);
   const itemArray = Array.from(itemList.children);
   // console.log('filterValue: ', filterValue, typeof filterValue);
@@ -81,12 +81,27 @@ function filterItems() {
   // );
   // console.log('matchingItems: ', matchingItems);
   for (eachItem of itemArray) {
-    if (eachItem.innerText.includes(filterValue)) {
+    if (eachItem.innerText.toLowerCase().includes(filterValue)) {
       eachItem.style.display = defaultItemDisplayStyle;
     } else {
       eachItem.style.display = 'none';
     }
   }
+}
+
+function filterItemsTraversy(e) {
+  const items = itemList.querySelectorAll('li');
+  const text = e.target.value.toLowerCase();
+
+  items.forEach((item) => {
+    const itemName = item.firstChild.textContent.toLowerCase();
+    if (itemName.indexOf(text) != -1) {
+      // indexOf() returns -1 if not found
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
 }
 
 function checkUI() {

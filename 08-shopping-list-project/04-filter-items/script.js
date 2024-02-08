@@ -62,6 +62,30 @@ function clearItems() {
   checkUI();
 }
 
+function filterItems() {
+  // console.log('Hello world'.includes('world'), typeof 'Hello world');
+
+  const filterValue = itemFilter.value;
+  // console.log('itemList: ', itemList.children);
+  const itemArray = Array.from(itemList.children);
+  // console.log('filterValue: ', filterValue, typeof filterValue);
+  // console.log('itemArray: ', itemArray);
+  // const matchingItems = itemArray.filter(
+  //   (eachItem) =>
+  //     // console.log(eachItem.innerText, typeof eachItem.innerText);
+  //     eachItem.innerText.includes(filterValue)
+  //   // false;
+  // );
+  // console.log('matchingItems: ', matchingItems);
+  for (eachItem of itemArray) {
+    if (eachItem.innerText.includes(filterValue)) {
+      eachItem.style.display = 'block';
+    } else {
+      eachItem.style.display = 'none';
+    }
+  }
+}
+
 function checkUI() {
   const items = itemList.querySelectorAll('li');
   if (items.length === 0) {
@@ -76,5 +100,6 @@ function checkUI() {
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem);
 clearBtn.addEventListener('click', clearItems);
+itemFilter.addEventListener('input', filterItems);
 
 checkUI();

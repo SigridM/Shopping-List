@@ -3,6 +3,9 @@ const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
 const clearBtn = document.getElementById('clear');
 const itemFilter = document.getElementById('filter');
+const defaultItemDisplayStyle = Array.from(
+  document.styleSheets[1].cssRules
+).find((e) => e.selectorText == '.items li').style.display;
 
 function addItem(e) {
   e.preventDefault();
@@ -79,7 +82,7 @@ function filterItems() {
   // console.log('matchingItems: ', matchingItems);
   for (eachItem of itemArray) {
     if (eachItem.innerText.includes(filterValue)) {
-      eachItem.style.display = 'block';
+      eachItem.style.display = defaultItemDisplayStyle;
     } else {
       eachItem.style.display = 'none';
     }

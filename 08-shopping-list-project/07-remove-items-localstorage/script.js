@@ -12,6 +12,7 @@ const defaultItemDisplayStyle = Array.from(
 function displayItems() {
   const itemsFromStorage = getItemsFromStorage();
   itemsFromStorage.forEach((item) => addItemToDOM(item));
+  checkUI();
 }
 
 /* The user has triggered a submit event from the add form. This will either add a brand
@@ -76,6 +77,12 @@ function changeQuantityInStorageOf(itemText, amount) {
   localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
+/* The user changed the quantity of an item in the shopping list. Make sure
+that change shows up in the user interface.
+Parameters: 
+  itemText (string) - the item whose quantity changed.
+  amount - the new quantity to be displayed.
+ */
 function changeQuantityInDOMOf(itemText, amount) {
   listItem = Array.from(itemList.children).find(
     (each) => each.textContent == itemText
@@ -83,6 +90,7 @@ function changeQuantityInDOMOf(itemText, amount) {
   quantityBox = listItem.querySelector('input');
   quantityBox.value = amount;
 }
+
 /* The user has attempted to add an item to the list. Check to see if the item is already
 in the list. If so, ask if they want to increase the quantity of that item. If they say
 okay to that, increase the quantity by one, otherwise, assume they made a mistake and
@@ -203,6 +211,14 @@ function removeItemFromStorage(listItem) {
     localStorage.setItem('items', JSON.stringify(itemsFromStorage));
   }
 }
+
+/* The user either clicked on the icon button to remove a specific item
+from the shopping list, or reduced the quantity of an item to zero. Put up 
+a dialog to see if they really want to remove the item from the list. If so,
+remove it. Either way, return a boolean saying whether it was removed.
+Parameters: listItem - the li requested to be removed.
+Return: a Boolean saying whether the removal happened.
+*/
 function confirmToRemove(listItem) {
   const itemText = listItem.textContent;
   if (confirm(`Are you sure you want to remove ${itemText} from the list?`)) {
@@ -236,7 +252,13 @@ function modifyItem(e) {
   checkUI();
 }
 
+/* The user clicked on the Clear All button. Remove all of the items in
+the shopping list. */
 function clearItems() {
+  if (!confirm(`Are you sure you want to remove all items from the list?`)) {
+    return;
+  }
+
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
   }
@@ -244,6 +266,9 @@ function clearItems() {
   checkUI();
 }
 
+/* As the user types characters into the filter text input, find only
+those items in the shopping list that match the string that is typed and 
+show only those. */
 function filterItems() {
   const filterValue = itemFilter.value.toLowerCase();
   const itemArray = Array.from(itemList.children);
@@ -257,6 +282,7 @@ function filterItems() {
   }
 }
 
+/* Brad Traversy's version of filterItems() */
 function filterItemsTraversy(e) {
   const items = itemList.querySelectorAll('li'); // not an HTMLCollection; does not need to be converted to an Array
   const text = e.target.value.toLowerCase();
@@ -272,10 +298,12 @@ function filterItemsTraversy(e) {
   });
 }
 
+/* After each significant change to the contents of the shopping list,
+check to see if it's empty, and if so, remove the clear button and item filter.
+*/
 function checkUI() {
   const items = itemList.children; //querySelectorAll('li');
-  console.log(itemList, items);
-  console.log(items.length);
+
   if (items.length === 0) {
     clearBtn.style.display = 'none';
     itemFilter.style.display = 'none';

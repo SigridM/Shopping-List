@@ -198,18 +198,23 @@ function removeItemFromDOM(listItem) {
 /* Remove from local storage the given listItem from the list of shopping list items.
   Parameters: listItem - the li whose textContent is to be removed from local storage.
  */
-function removeItemFromStorage(listItem) {
-  const itemsFromStorage = getItemsFromStorage();
-  const textToRemove = listItem.textContent;
-  const index = itemsFromStorage.findIndex(
-    (each) => each.name == listItem.textContent
+function removeItemFromStorage(textToRemove) {
+  let itemsFromStorage = getItemsFromStorage();
+
+  // Traversy version; use filter
+  itemsFromStorage = itemsFromStorage.filter(
+    (each) => each.name != textToRemove
   );
-  console.log(textToRemove);
-  if (index > -1) {
-    // found
-    itemsFromStorage.splice(index, 1);
-    localStorage.setItem('items', JSON.stringify(itemsFromStorage));
-  }
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage));
+
+  // my version
+  // const index = itemsFromStorage.findIndex(
+  //   (each) => each.name == textToRemove
+  // );
+  // if (index > -1) { // found
+  //   itemsFromStorage.splice(index, 1);
+  //   localStorage.setItem('items', JSON.stringify(itemsFromStorage));
+  // }
 }
 
 /* The user either clicked on the icon button to remove a specific item
@@ -222,7 +227,7 @@ Return: a Boolean saying whether the removal happened.
 function confirmToRemove(listItem) {
   const itemText = listItem.textContent;
   if (confirm(`Are you sure you want to remove ${itemText} from the list?`)) {
-    removeItemFromStorage(listItem);
+    removeItemFromStorage(listItem.textContent);
     removeItemFromDOM(listItem);
     return true;
   }
@@ -233,7 +238,7 @@ or in the quantity box. Either remove the item from the DOM and from storage, or
 its quantity in the DOM and in storage, accordingly.
 Parameter: e - the event that triggered this method
 */
-function modifyItem(e) {
+function onClickItem(e) {
   if (e.target.parentElement.classList.contains('remove-item')) {
     const listItem = e.target.parentElement.parentElement;
     confirmToRemove(listItem);
@@ -263,6 +268,8 @@ function clearItems() {
     itemList.removeChild(itemList.firstChild);
   }
   localStorage.setItem('items', JSON.stringify([]));
+  // Traversy version
+  // localStorage.removeItem('items');
   checkUI();
 }
 
@@ -317,7 +324,7 @@ function checkUI() {
 function init() {
   // Event Listeners
   itemForm.addEventListener('submit', onAddItemSubmit);
-  itemList.addEventListener('click', modifyItem);
+  itemList.addEventListener('click', onClickItem);
   clearBtn.addEventListener('click', clearItems);
   itemFilter.addEventListener('input', filterItems);
   document.addEventListener('DOMContentLoaded', displayItems);

@@ -3,6 +3,9 @@ const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
 const clearBtn = document.getElementById('clear');
 const itemFilter = document.getElementById('filter');
+const formBtn = itemForm.querySelector('button');
+let isEditMode = false;
+
 const defaultItemDisplayStyle = Array.from(
   document.styleSheets[1].cssRules
 ).find((e) => e.selectorText == '.items li').style.display;
@@ -253,10 +256,23 @@ function onClickItem(e) {
     } else {
       changeQuantityInStorageOf(itemText, e.target.value);
     }
+  } else {
+    setItemToEdit(e.target);
   }
   checkUI();
 }
 
+function setItemToEdit(listItem) {
+  isEditMode = true;
+  itemList
+    .querySelectorAll('li')
+    .forEach((eachItem) => eachItem.classList.remove('edit-mode'));
+  listItem.classList.add('edit-mode');
+
+  formBtn.innerHTML = '<i class = "fa-solid fa-pen"></i> Update Item';
+  formBtn.style.backgroundColor = '#228B22';
+  itemInput.value = listItem.textContent;
+}
 /* The user clicked on the Clear All button. Remove all of the items in
 the shopping list. */
 function clearItems() {

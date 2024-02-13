@@ -1,3 +1,3 @@
 # Shopping List
 
-Simple shopping list app from traversy Modern JS From the Beginning course.
+Simple shopping list app from Brad Traversy's "Modern JS From the Beginning" course.

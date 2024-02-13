@@ -15,13 +15,16 @@ const defaultItemDisplayStyle = Array.from(
 function displayItems() {
   const itemsFromStorage = getItemsFromStorage();
   itemsFromStorage.forEach((item) => addItemToDOM(item));
-  checkUI();
+  resetUI();
 }
 
-/* The user has triggered a submit event from the add form. This will either add a brand
-new item to the list or increase the quantity of an item of that name already in the list.
-If an item is added, it must be added to the DOM and to storage. Otherwise, the DOM should
-be updated. Either way, clear the form afterwards.
+/* The user has triggered a submit event from the add form. If not in Edit mode, this will 
+either add a brand new item to the list or increase the quantity of an item of that name 
+already in the list. On the other hand, if we are in edit mode, we just remove the item
+to be edited from storage and from the DOM and go out of edit mode, and the edited item will
+be re-added as if it is a new item. 
+When an item is added, it must be added to the DOM and to storage. Update the DOM and 
+clear the form afterwards.
 */
 function onAddItemSubmit(e) {
   e.preventDefault();
@@ -33,13 +36,30 @@ function onAddItemSubmit(e) {
     alert('Please add an item');
     return;
   }
+  let quantity = 1; // assume a quantity of one
 
-  const itemToAdd = addItemToStorage(newItemText);
+  // Check for edit mode
+  if (isEditMode) {
+    const itemToEdit = itemList.querySelector('.edit-mode'); // get by class
+
+    // Since we're editing, keep the quantity of the old item
+    const storedItem = getItemsFromStorage().find(
+      (each) => each.name == itemToEdit.textContent
+    );
+    quantity = storedItem.quantity;
+
+    removeItemFromStorage(itemToEdit.textContent);
+    itemToEdit.classList.remove('edit-mode');
+    itemToEdit.remove();
+    isEditMode = false;
+  }
+
+  const itemToAdd = addItemToStorage(newItemText, quantity);
   if (itemToAdd !== null) {
     addItemToDOM(itemToAdd);
   }
 
-  checkUI();
+  resetUI();
 
   itemInput.value = '';
 }
@@ -103,7 +123,7 @@ Either way, update the list and/or quantity in local storage
 Parameters: itemText (string) - the item to be added to the Shopping List
 Return: either the item added (if it's a new item) or null (if it's an increase or cancel)
  */
-function addItemToStorage(itemText) {
+function addItemToStorage(itemText, quantity = 1) {
   const itemsFromStorage = getItemsFromStorage();
   const itemIndex = itemsFromStorage.findIndex((each) => each.name == itemText);
 
@@ -127,7 +147,7 @@ function addItemToStorage(itemText) {
   // Add new item to array
   const itemToAdd = {
     name: itemText,
-    quantity: 1,
+    quantity: quantity,
   };
   itemsFromStorage.push(itemToAdd);
 
@@ -236,9 +256,11 @@ function confirmToRemove(listItem) {
   }
   return false;
 }
-/* The user has clicked somewhere in the list item. This could be either in the remove icon
-or in the quantity box. Either remove the item from the DOM and from storage, or change
-its quantity in the DOM and in storage, accordingly.
+/* The user has clicked somewhere in the list item. This could be either in the remove icon,
+in the quantity box, or the item iteself. Respond accordingly. If it's in the remove icon,
+remove the item from the DOM and from storage; if it's in the quantiy box, change
+its quantity in the DOM and in storage; and if it's in the list item's text, go to edit mode
+with that item so the user can modify it.
 Parameter: e - the event that triggered this method
 */
 function onClickItem(e) {
@@ -259,20 +281,30 @@ function onClickItem(e) {
   } else {
     setItemToEdit(e.target);
   }
-  checkUI();
+  resetUI();
 }
 
+/* The user has clicked on the text of an item in the shopping list. Go to Edit mode and
+put that item into the itemInput for editing. Change the UI to indicate that we are in 
+Edit mode and which item is being edited.
+ */
 function setItemToEdit(listItem) {
   isEditMode = true;
+
+  // take everyone else out of edit mode
   itemList
     .querySelectorAll('li')
     .forEach((eachItem) => eachItem.classList.remove('edit-mode'));
   listItem.classList.add('edit-mode');
 
+  // change the color and text of the form button
   formBtn.innerHTML = '<i class = "fa-solid fa-pen"></i> Update Item';
   formBtn.style.backgroundColor = '#228B22';
+
+  // set the itemInput to the text to be edited
   itemInput.value = listItem.textContent;
 }
+
 /* The user clicked on the Clear All button. Remove all of the items in
 the shopping list. */
 function clearItems() {
@@ -286,7 +318,7 @@ function clearItems() {
   localStorage.setItem('items', JSON.stringify([]));
   // Traversy version
   // localStorage.removeItem('items');
-  checkUI();
+  resetUI();
 }
 
 /* As the user types characters into the filter text input, find only
@@ -323,8 +355,9 @@ function filterItemsTraversy(e) {
 
 /* After each significant change to the contents of the shopping list,
 check to see if it's empty, and if so, remove the clear button and item filter.
+Also, if we're not in edit mode, reset the inputValue and form botton.
 */
-function checkUI() {
+function resetUI() {
   const items = itemList.children; //querySelectorAll('li');
 
   if (items.length === 0) {
@@ -333,6 +366,12 @@ function checkUI() {
   } else {
     clearBtn.style.display = 'block';
     itemFilter.style.display = 'block';
+  }
+
+  if (!isEditMode) {
+    itemInput.value = '';
+    formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
+    formBtn.style.backgroundColor = '#333';
   }
 }
 
@@ -345,6 +384,6 @@ function init() {
   itemFilter.addEventListener('input', filterItems);
   document.addEventListener('DOMContentLoaded', displayItems);
 
-  checkUI();
+  resetUI();
 }
 init();

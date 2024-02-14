@@ -279,7 +279,15 @@ function onClickItem(e) {
       changeQuantityInStorageOf(itemText, e.target.value);
     }
   } else {
-    setItemToEdit(e.target);
+    if (e.target == itemList) {
+      // a click on the list itself; take every list item out of edit mode
+      itemList
+        .querySelectorAll('li')
+        .forEach((eachItem) => eachItem.classList.remove('edit-mode'));
+      isEditMode = false;
+    } else {
+      setItemToEdit(e.target);
+    }
   }
   resetUI();
 }

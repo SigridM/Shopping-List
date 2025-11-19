@@ -1,89 +1,75 @@
 # Shopping‑List Web Application
 
-**Sigrid Mortensen** – [GitHub](https://github.com/SigridM) · [linkedin.com/in/sigridmortensen](https://linkedin.com/in/sigridmortensen)
+**Sigrid Mortensen**  
+[GitHub](https://github.com/SigridM) · [LinkedIn](https://linkedin.com/in/sigridmortensen)
 
 ---
 
 ## Overview
-This is a full‑stack web application that allows users to create, manage, and share shopping lists. Designed to demonstrate end‑to‑end development, it features a modern front‑end UI, back‑end API, and cloud deployment.
+
+This shopping list app lets users quickly add, edit, filter, manage and share their grocery lists, right in their browser. Built with vanilla JavaScript, HTML, and CSS, it’s designed to demonstrate essential front-end development skills—no frameworks, no build tools required.
 
 ---
 
-## Key Features
-- Create, edit, delete items in shopping lists
-- Categorize items and mark them as purchased or pending
-- Support for bulk ingredient import (if applicable)
-- Responsive UI built for desktop and mobile
-- RESTful API for data operations
-- User authentication (if applicable) and secure data handling
+## Features
+
+- Add, edit, and remove items from your shopping list
+- Filter list items by name
+- Responsive UI—works on desktop and mobile
+- Data persists locally in the browser (via `localStorage`)
+- Simple, user-friendly design
 
 ---
 
 ## Technologies Used
-- Front‑end: React + Redux for state management
-- Back‑end: Node.js + Express (or whichever)
-- Database: PostgreSQL / MySQL (or whichever)
-- Deployment: Docker / Heroku / AWS (if applicable)
-- Testing: Jest / Mocha / Cypress (if applicable)
 
----
-
-## Architecture & Design
-The application follows a layered architecture:
-- **UI layer** handles components, state and user interactions
-- **Service/API layer** manages data requests and business logic
-- **Database layer** stores user and list data using normalized schema
-Design patterns used: MVC / Flux / Repository Pattern (customize)
-Focus was on code readability, testability, and maintainability.
+- **JavaScript** (ES6+) for interactivity and persistence
+- **HTML/CSS** for structure and styling
+- No build system or dependencies—pure browser-ready code
 
 ---
 
 ## Getting Started
+
 ### Prerequisites
-- Node.js vXX
-- PostgreSQL/MySQL vXX
-- (Optional) Docker
 
-### Setup
-```bash
-git clone https://github.com/SigridM/Shopping‑List.git
-cd Shopping‑List
-# Front‑end setup
-cd client
-npm install
-npm start
-# Back‑end setup
-cd server
-npm install
-npm run migrate
-npm run dev
-```
+- A modern web browser: Chrome, Firefox, Edge, or Safari
+- (Optional) Visual Studio Code with the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension for auto-refresh
 
-### Running Tests
-```bash
-cd server
-npm test
-cd ../client
-npm test
-```
+### Run Locally
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/SigridM/Shopping-List.git
+   ```
+2. **Open the project folder in your editor**  
+   (e.g., VS Code or directly in your file manager)
+3. **Launch the app:**
+   - Double-click `index.html` to open it in your browser  
+   - **OR** (recommended): In VS Code, right-click `index.html` and choose "Open with Live Server"
+
+No installations, databases, or builds required!
 
 ---
 
 ## Screenshots
-<img width="549" height="615" alt="Screenshot 2025-11-19 at 8 01 32 AM" src="https://github.com/user-attachments/assets/2abb8b9f-f362-47fb-ae8e-7aac9b9a4dbb" />
+<img width="549" height="615" alt="Screenshot 2025-11-19 at 8 01 32 AM" src="https://github.com/user-attachments/assets/8bf05138-6816-404a-8054-e8241ef3e6c1" />
+<img width="550" height="483" alt="Screenshot 2025-11-19 at 8 01 48 AM" src="https://github.com/user-attachments/assets/889a3e6c-b4b0-4c4f-96fc-df92a32d5c4f" />
 
-<img width="550" height="483" alt="Screenshot 2025-11-19 at 8 01 48 AM" src="https://github.com/user-attachments/assets/f52d9ef3-d9c0-4ba3-9a8f-fb9495aafacd" />
 
 ---
 
 ## What I Learned
-- Designing and implementing a full‑stack CRUD application from scratch
-- Managing state across a front‑end app with Redux
-- Designing REST APIs and database schemas for performance, reliability and clarity
-- Ensuring responsive UI and cross‑device compatibility
-- Writing clear documentation and setup instructions
+
+- Practiced DOM manipulation and state management with vanilla JavaScript
+- Implemented real-time filtering using JavaScript event listeners and array methods
+- Used localStorage for data persistence and a seamless user experience
+- Designed a responsive UI that adapts to different devices
+- Improved accessibility with semantic HTML and focus management
+- Enhanced my understanding of front-end project organization and browser APIs
 
 ---
 
 ## License
-This project is released under the MIT License. See the LICENSE file for details.
+
+This project is released under the MIT License. See the [LICENSE](LICENSE) file for details.

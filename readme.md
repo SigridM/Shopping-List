@@ -70,6 +70,9 @@ npm test
 ---
 
 ## Screenshots
+<img width="549" height="615" alt="Screenshot 2025-11-19 at 8 01 32 AM" src="https://github.com/user-attachments/assets/2abb8b9f-f362-47fb-ae8e-7aac9b9a4dbb" />
+
+<img width="550" height="483" alt="Screenshot 2025-11-19 at 8 01 48 AM" src="https://github.com/user-attachments/assets/f52d9ef3-d9c0-4ba3-9a8f-fb9495aafacd" />
 
 ---
 
